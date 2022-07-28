@@ -2,6 +2,11 @@ import { Routes } from '@angular/router';
 
 const Routing: Routes = [
   {
+    path: 'crud',
+    loadChildren: () =>
+      import('./crud/crud.module').then((m) => m.CrudModule),
+  },
+  {
     path: 'dashboard',
     loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
