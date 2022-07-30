@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { LayoutService } from '../../core/layout.service';
+import {ToolbarService} from "../../core/toolbar.service";
 
 @Component({
   selector: 'app-toolbar',
@@ -20,7 +21,9 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
   toolbarContainerCssClasses: string = '';
   pageTitleCssClasses: string = '';
 
-  constructor(private layout: LayoutService) {}
+  constructor(
+    private toolbarService: ToolbarService,
+    private layout: LayoutService) {}
 
   ngOnInit(): void {
     this.toolbarContainerCssClasses =
@@ -41,5 +44,9 @@ export class ToolbarComponent implements OnInit, AfterViewInit {
         }
       }
     }
+  }
+  create(){
+    this.toolbarService.createSubject.next(true);
+    this.toolbarService.createSubject.next(false);
   }
 }

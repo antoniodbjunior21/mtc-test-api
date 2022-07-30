@@ -1,0 +1,63 @@
+<div>
+  <table #table [dataSource]="dataSource" class="w-full" mat-table matSort>
+
+    <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+
+    <tr
+      *matRowDef="let row; columns: visibleColumns;"
+      @fadeInUp
+      class="hover:bg-hover trans-ease-out cursor-pointer"
+      mat-row></tr>
+
+    <!-- Text Columns -->
+    <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+      <!-- Checkbox Column -->
+      <ng-container *ngIf="column.type === 'checkbox'" [matColumnDef]="column.property">
+        <th *matHeaderCellDef mat-header-cell>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        color="primary">
+          </mat-checkbox>
+        </th>
+        <td *matCellDef="let row" class="w-4" mat-cell>
+          <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                        (click)="$event.stopPropagation()"
+                        [checked]="selection.isSelected(row)"
+                        color="primary">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+        <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+        <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+          {{formatRowValue(row, column.property)}}
+        </td>
+      </ng-container>
+      <ng-container *ngIf="column.type === 'renderer'" [matColumnDef]="column.property">
+        <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
+        <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+          <ng-container *ngTemplateOutlet="column.template; context:{row: row}"></ng-container>
+        </td>
+      </ng-container>
+    </ng-container>
+  </table>
+
+  <div *ngIf="matDataSource?.filteredData?.length === 0 && !isSearching && !isStarting"
+       style="margin-bottom: 30px;"
+       fxFlex="auto"
+       fxLayout="column"
+       fxLayoutAlign="center center">
+    <img class="m-12 h-64" src="assets/img/illustrations/idea.svg">
+    <h2 class="headline m-0 text-center">Nenhum resultado encontrado.</h2>
+  </div>
+
+  <!--[fxHide]="matDataSource.filteredData.length === 0"-->
+  <mat-paginator
+    [length]="pageLength"
+    [hidePageSize]="true"
+    [pageSizeOptions]="pageSizeOptions"
+    [pageSize]="pageSize"
+    (page)="pageEvents($event)"
+    class="sticky left-0"></mat-paginator>
+</div>
