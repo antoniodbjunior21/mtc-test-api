@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserModel } from '../../models/user.model';
 import { environment } from '../../../../../environments/environment';
 import { AuthModel } from '../../models/auth.model';
+import {RestConfigService} from "../../../../api/rest-config.service";
 
 const API_USERS_URL = `${environment.apiUrl}/api/auth`;
 
@@ -11,7 +12,7 @@ const API_USERS_URL = `${environment.apiUrl}/api/auth`;
   providedIn: 'root',
 })
 export class AuthHTTPService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private rest: RestConfigService) {}
 
   // public methods
   login(email: string, password: string): Observable<any> {
@@ -42,5 +43,8 @@ export class AuthHTTPService {
       headers: httpHeaders,
     });*/
     return this.http.get<UserModel>(`${API_USERS_URL}/me`, {withCredentials: true});
+  }
+  logout(){
+    return this.rest.get(`/api/sessao/logout`);
   }
 }

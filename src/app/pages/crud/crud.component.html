@@ -1,7 +1,16 @@
 <!--suppress ALL -->
 
+<div class="d-flex justify-content-between mb-5">
+  <h3 class="d-flex align-items-center fw-bolder text-dark">
+    Instituições
+  </h3>
+  <button type="button" class="btn btn-sm btn-primary" (click)="editar()">
+    + Instituição
+  </button>
+</div>
 <div class="row"  [hidden]="state !== 'ST_LIST'">
   <div class="col-md-9">
+
     <div class="table-responsive">
       <table  mat-table matSort [dataSource]="dataSource" (matSortChange)="sort($event)" class="mat-elevation-z8">
         <!-- Position Column -->

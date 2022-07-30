@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.authService.logout();
     this.initForm();
     // get return url from route parameters or default to '/'
     this.returnUrl =
